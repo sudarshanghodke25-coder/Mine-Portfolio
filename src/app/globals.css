@@ -1,0 +1,127 @@
+@import "tailwindcss";
+
+@import "devicon/devicon.min.css";
+@import "@fortawesome/fontawesome-free/css/all.min.css";
+
+@theme {
+  --color-bg: var(--bg);
+  --color-text: var(--text);
+  --color-text-muted: var(--text-muted);
+  --color-surface: var(--surface);
+  --color-border: var(--border);
+  --color-accent-blue: var(--accent-blue);
+  --color-accent-purple: var(--accent-purple);
+  --color-accent-cyan: var(--accent-cyan);
+}
+
+:root {
+  --bg: #050816;
+  --text: #F5F7FF;
+  --text-muted: #8B93B0;
+  --surface: rgba(255, 255, 255, 0.03);
+  --border: rgba(255, 255, 255, 0.08);
+  --accent-blue: #4F7FFF;
+  --accent-purple: #9D5CFF;
+  --accent-cyan: #22D3EE;
+  
+  --mesh-1: rgba(79, 127, 255, 0.15);
+  --mesh-2: rgba(157, 92, 255, 0.15);
+  --mesh-3: rgba(34, 211, 238, 0.1);
+}
+
+[data-theme="light"] {
+  --bg: #F8FAFC;
+  --text: #0F172A;
+  --text-muted: #475569;
+  --surface: rgba(255, 255, 255, 0.7);
+  --border: rgba(0, 0, 0, 0.08);
+  --accent-blue: #2563EB;
+  --accent-purple: #7C3AED;
+  --accent-cyan: #06B6D4;
+  
+  --mesh-1: rgba(37, 99, 235, 0.15);
+  --mesh-2: rgba(124, 58, 237, 0.15);
+  --mesh-3: rgba(6, 182, 212, 0.15);
+}
+
+* {
+  box-sizing: border-box;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  background: var(--bg);
+  color: var(--text);
+  overflow-x: hidden;
+  transition: background 0.4s ease, color 0.4s ease;
+}
+
+::selection { 
+  background: var(--accent-purple); 
+  color: #fff; 
+}
+
+/* ---------- Mesh Background ---------- */
+.mesh-bg {
+  position: fixed;
+  inset: 0;
+  z-index: -1;
+  pointer-events: none;
+  overflow: hidden;
+}
+.mesh-blob {
+  position: absolute;
+  border-radius: 50%;
+  filter: blur(120px);
+  animation: drift 20s infinite alternate ease-in-out;
+}
+.mesh-blob.b1 { width: 50vw; height: 50vw; background: var(--mesh-1); top: -10%; left: -10%; }
+.mesh-blob.b2 { width: 45vw; height: 45vw; background: var(--mesh-2); bottom: -10%; right: -10%; animation-delay: -5s; }
+.mesh-blob.b3 { width: 40vw; height: 40vw; background: var(--mesh-3); top: 30%; left: 30%; animation-delay: -10s; }
+
+@keyframes drift {
+  0% { transform: translate(0, 0) scale(1); }
+  50% { transform: translate(5%, 10%) scale(1.1); }
+  100% { transform: translate(-5%, -5%) scale(0.9); }
+}
+
+/* ---------- Glass / Bento Card ---------- */
+.glass {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  backdrop-filter: blur(14px);
+  -webkit-backdrop-filter: blur(14px);
+  position: relative;
+  overflow: hidden;
+  box-shadow: 0 10px 30px -10px rgba(0,0,0,0.05);
+}
+[data-theme="dark"] .glass {
+  box-shadow: 0 10px 30px -10px rgba(0,0,0,0.5);
+}
+
+/* Floating animation */
+.floating {
+  animation: floating 4s ease-in-out infinite;
+}
+@keyframes floating {
+  0% { transform: translateY(0px); }
+  50% { transform: translateY(-8px); }
+  100% { transform: translateY(0px); }
+}
+
+/* Utility for text gradient */
+.grad-text {
+  background: linear-gradient(120deg, var(--accent-blue), var(--accent-purple) 55%, var(--accent-cyan));
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+}
+
+/* Theme Icon Adapters */
+[data-theme="light"] .theme-icon { color: #000; filter: none; }
+[data-theme="dark"] .theme-icon { color: #fff; filter: invert(1); }
+[data-theme="light"] .theme-icon-text { color: #000; }
+[data-theme="dark"] .theme-icon-text { color: #fff; }
