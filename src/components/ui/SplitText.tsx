@@ -10,11 +10,12 @@ gsap.registerPlugin(ScrollTrigger);
 interface SplitTextProps {
   text: string;
   className?: string;
+  spanClassName?: string;
   delay?: number;
   animateOnLoad?: boolean;
 }
 
-export default function SplitText({ text, className = "", delay = 0, animateOnLoad = false }: SplitTextProps) {
+export default function SplitText({ text, className = "", spanClassName = "", delay = 0, animateOnLoad = false }: SplitTextProps) {
   const containerRef = useRef<HTMLDivElement>(null);
 
   useGSAP(() => {
@@ -49,7 +50,7 @@ export default function SplitText({ text, className = "", delay = 0, animateOnLo
   return (
     <div ref={containerRef} className={`${className} flex flex-wrap overflow-hidden`}>
       {text.split(" ").map((word, i) => (
-        <span key={i} className="split-word inline-block mr-[0.25em]">
+        <span key={i} className={`split-word inline-block mr-[0.25em] ${spanClassName}`}>
           {word}
         </span>
       ))}

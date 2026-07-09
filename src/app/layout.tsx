@@ -4,6 +4,7 @@ import "./globals.css";
 import { TooltipProvider } from "@/components/ui/tooltip";
 import SmoothScroll from "@/components/ui/SmoothScroll";
 import CustomCursor from "@/components/ui/CustomCursor";
+import Preloader from "@/components/ui/Preloader";
 import { cn } from "@/lib/utils";
 
 const geist = Geist({subsets:['latin'],variable:'--font-sans'});
@@ -38,13 +39,10 @@ export default function RootLayout({
   return (
     <html lang="en" data-theme="dark" className={cn("scroll-smooth", "font-sans", geist.variable)}>
       <body className={`${geist.variable} ${inter.variable} ${spaceGrotesk.variable} ${jetbrainsMono.variable} ${syne.variable} antialiased font-[family-name:var(--font-sans)] bg-[var(--bg)] text-[var(--text)] overflow-x-hidden selection:bg-[var(--accent-cyan)] selection:text-[var(--bg)]`}>
-        <div className="mesh-bg">
-          <div className="mesh-blob b1"></div>
-          <div className="mesh-blob b2"></div>
-          <div className="mesh-blob b3"></div>
-        </div>
+        <div className="noise-overlay"></div>
         <div id="progress" className="fixed top-0 left-0 h-[3px] w-0 bg-gradient-to-r from-[var(--accent-blue)] via-[var(--accent-purple)] to-[var(--accent-cyan)] z-[1000] transition-all duration-75"></div>
         <SmoothScroll>
+          <Preloader />
           <TooltipProvider>{children}</TooltipProvider>
           <CustomCursor />
         </SmoothScroll>

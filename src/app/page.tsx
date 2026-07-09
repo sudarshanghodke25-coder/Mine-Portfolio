@@ -5,8 +5,6 @@ import { useGSAP } from "@gsap/react";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import { Moon, Sun, ArrowRight, Code, BrainCircuit, Layout, Layers, ExternalLink } from "lucide-react";
-import { Canvas, useFrame } from "@react-three/fiber";
-import { Float, MeshDistortMaterial, Sphere, Stars } from "@react-three/drei";
 
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
@@ -14,67 +12,11 @@ import { Tooltip, TooltipContent, TooltipTrigger } from "@/components/ui/tooltip
 
 import Magnetic from "@/components/ui/Magnetic";
 import SplitText from "@/components/ui/SplitText";
+import LiquidBackground from "@/components/ui/LiquidBackground";
 
 gsap.registerPlugin(ScrollTrigger);
 
-// 3D Background Component
-function Scene() {
-  const sphereRef = useRef<any>(null);
-  
-  useFrame(({ clock }) => {
-    if (sphereRef.current) {
-      sphereRef.current.rotation.x = clock.getElapsedTime() * 0.1;
-      sphereRef.current.rotation.y = clock.getElapsedTime() * 0.15;
-    }
-  });
 
-  return (
-    <>
-      <ambientLight intensity={0.5} />
-      <directionalLight position={[10, 10, 5]} intensity={1} />
-      <Stars radius={100} depth={50} count={5000} factor={4} saturation={0} fade speed={1} />
-      <Float speed={2} rotationIntensity={2} floatIntensity={2}>
-        <Sphere ref={sphereRef} args={[1.5, 64, 64]} position={[0, 0, -5]} scale={1.2}>
-          <MeshDistortMaterial 
-            color="#9D5CFF" 
-            attach="material" 
-            distort={0.4} 
-            speed={2} 
-            roughness={0.2} 
-            metalness={0.8}
-            wireframe={true}
-          />
-        </Sphere>
-      </Float>
-      
-      <Float speed={3} rotationIntensity={2} floatIntensity={3}>
-        <Sphere args={[0.8, 32, 32]} position={[-4, 2, -8]} scale={1}>
-          <MeshDistortMaterial 
-            color="#22D3EE" 
-            attach="material" 
-            distort={0.6} 
-            speed={3} 
-            roughness={0.1} 
-            metalness={1}
-          />
-        </Sphere>
-      </Float>
-
-      <Float speed={1.5} rotationIntensity={1} floatIntensity={2}>
-        <Sphere args={[1.2, 32, 32]} position={[4, -2, -6]} scale={1}>
-          <MeshDistortMaterial 
-            color="#4F7FFF" 
-            attach="material" 
-            distort={0.3} 
-            speed={1.5} 
-            roughness={0.3} 
-            metalness={0.6}
-          />
-        </Sphere>
-      </Float>
-    </>
-  );
-}
 
 const SkillTooltip = ({ icon, name, delay }: { icon: string, name: string, delay: string }) => (
   <Tooltip>
@@ -181,13 +123,8 @@ export default function Home() {
   return (
     <main ref={containerRef} className="relative">
       
-      {/* 3D CANVAS BACKGROUND */}
-      <div className="absolute top-0 left-0 w-full h-screen z-0 pointer-events-none opacity-80" style={{ pointerEvents: 'auto' }}>
-        <Canvas camera={{ position: [0, 0, 5], fov: 50 }}>
-          <Scene />
-        </Canvas>
-        <div className="absolute inset-0 bg-gradient-to-b from-transparent to-[var(--bg)] pointer-events-none z-10"></div>
-      </div>
+      {/* LIQUID BACKGROUND */}
+      <LiquidBackground />
 
       {/* ---------- NAV ---------- */}
       <nav id="nav" className="fixed top-0 left-0 right-0 z-[900] flex items-center justify-between px-[6vw] py-6 transition-all duration-300 bg-transparent">
@@ -197,7 +134,7 @@ export default function Home() {
             SG
           </div>
         </Magnetic>
-        <ul className="hidden md:flex gap-10 list-none">
+        <ul className="flex flex-wrap items-center justify-center gap-4 md:gap-10 list-none mt-4 md:mt-0">
           <li><Magnetic><a href="#about" className="font-[family-name:var(--font-jetbrains-mono)] text-sm uppercase tracking-widest text-[var(--text-muted)] hover:text-[var(--text)] transition-colors inline-block px-2 py-1">About</a></Magnetic></li>
           <li><Magnetic><a href="#skills" className="font-[family-name:var(--font-jetbrains-mono)] text-sm uppercase tracking-widest text-[var(--text-muted)] hover:text-[var(--text)] transition-colors inline-block px-2 py-1">Skills</a></Magnetic></li>
           <li><Magnetic><a href="#projects" className="font-[family-name:var(--font-jetbrains-mono)] text-sm uppercase tracking-widest text-[var(--text-muted)] hover:text-[var(--text)] transition-colors inline-block px-2 py-1">Projects</a></Magnetic></li>
@@ -219,33 +156,32 @@ export default function Home() {
             CREATIVE PORTFOLIO
           </div>
           
-          <h1 className="font-[family-name:var(--font-syne)] text-5xl md:text-7xl lg:text-[7rem] font-black leading-tight tracking-tighter mb-6 drop-shadow-2xl text-center w-full">
-            <SplitText text="SUDARSHAN GHODKE" delay={0.2} animateOnLoad={true} spanClassName="grad-text" />
-          </h1>
-          
-          <p className="hero-anim font-[family-name:var(--font-jetbrains-mono)] text-[var(--text)] text-lg md:text-xl font-light mb-12 max-w-2xl bg-[var(--surface)] border border-[var(--border)] px-8 py-4 rounded-3xl backdrop-blur-md text-center">
-            Python Developer <span className="text-[var(--accent-purple)] mx-3">/</span> Creative Coding
-          </p>
-          
+          <h2 className="font-[family-name:var(--font-syne)] font-black text-5xl md:text-6xl lg:text-7xl mb-4 text-center tracking-tighter drop-shadow-2xl">
+          <SplitText text="SUDARSHAN GHODKE" spanClassName="grad-text" />
+        </h2>
+        
+        <div className="overflow-hidden mb-12">
+          <h3 className="hero-anim font-[family-name:var(--font-jetbrains-mono)] text-[var(--text-muted)] text-lg md:text-xl tracking-widest uppercase text-center drop-shadow-md">
+            Python Developer <span className="text-[var(--accent-purple)]">/</span> Creative Coding
+          </h3>
+        </div>
+        
+        <div className="overflow-hidden">
           <div className="hero-anim flex flex-wrap justify-center gap-6">
             <Magnetic>
-              <Button asChild size="lg" className="rounded-full px-10 py-8 text-lg font-bold font-[family-name:var(--font-syne)] hover:scale-105 transition-transform bg-[var(--text)] text-[var(--bg)] cursor-pointer">
-                <a href="#projects" className="flex items-center gap-2 justify-center">
-                  View Projects <ArrowRight size={20} />
-                </a>
-              </Button>
+              <a href="#projects" className="inline-flex items-center justify-center rounded-full px-10 py-5 h-auto text-lg font-bold font-[family-name:var(--font-syne)] hover:scale-105 transition-transform bg-[var(--text)] text-[var(--bg)] cursor-pointer">
+                <span className="flex items-center gap-2">View Projects <ArrowRight size={20} /></span>
+              </a>
             </Magnetic>
             <Magnetic>
-              <Button asChild variant="outline" size="lg" className="rounded-full px-10 py-8 text-lg font-bold font-[family-name:var(--font-syne)] border-[var(--border)] bg-[var(--surface)] hover:border-[var(--accent-cyan)] backdrop-blur-md hover:bg-cyan-500/10 text-[var(--text)] cursor-pointer">
-                <a href="#contact" className="flex items-center justify-center">
-                  Contact Me
-                </a>
-              </Button>
+              <a href="#contact" className="inline-flex items-center justify-center rounded-full px-10 py-5 h-auto text-lg font-bold font-[family-name:var(--font-syne)] border border-[var(--border)] bg-[var(--surface)] hover:border-[var(--accent-cyan)] backdrop-blur-md hover:bg-cyan-500/10 text-[var(--text)] cursor-pointer">
+                Contact Me
+              </a>
             </Magnetic>
           </div>
         </div>
+        </div>
       </section>
-
       {/* INFINITE MARQUEE */}
       <div className="overflow-hidden whitespace-nowrap bg-[var(--accent-cyan)] text-[var(--bg)] py-4 font-[family-name:var(--font-syne)] text-4xl font-black uppercase tracking-widest relative z-20" ref={marqueeRef}>
         <div className="marquee-inner inline-block">
@@ -472,39 +408,31 @@ export default function Home() {
 
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-20">
           <Magnetic>
-            <Button asChild variant="outline" className="reveal glass h-auto p-8 rounded-[2rem] flex flex-col items-center justify-center gap-4 hover:border-[var(--accent-cyan)] hover:bg-[rgba(34,211,238,0.05)] transition-all floating shadow-2xl text-center bg-transparent border-0 border-transparent shadow-none" style={{ animationDelay: "0s" }}>
-              <a href="mailto:sudarshanghodke25@gmail.com">
-                <div className="text-5xl text-[#ea4335]"><i className="fa-solid fa-envelope"></i></div>
-                <div className="font-[family-name:var(--font-jetbrains-mono)] text-xs uppercase tracking-[0.2em] text-[var(--text-muted)] mt-4">Email</div>
-              </a>
-            </Button>
+            <a href="mailto:sudarshanghodke25@gmail.com" className="reveal glass h-auto p-8 rounded-[2rem] flex flex-col items-center justify-center gap-4 hover:border-[var(--accent-cyan)] hover:bg-[rgba(34,211,238,0.05)] transition-all floating shadow-2xl text-center bg-transparent border-0 shadow-none">
+              <div className="text-5xl text-[#ea4335]"><i className="fa-solid fa-envelope"></i></div>
+              <div className="font-[family-name:var(--font-jetbrains-mono)] text-xs uppercase tracking-[0.2em] text-[var(--text-muted)] mt-4">Email</div>
+            </a>
           </Magnetic>
 
           <Magnetic>
-            <Button asChild variant="outline" className="reveal glass h-auto p-8 rounded-[2rem] flex flex-col items-center justify-center gap-4 hover:border-[var(--accent-cyan)] hover:bg-[rgba(34,211,238,0.05)] transition-all floating shadow-2xl text-center bg-transparent border-0 border-transparent shadow-none" style={{ animationDelay: "0.2s" }}>
-              <a href="https://github.com/sudarshanghodke25-coder" target="_blank" rel="noopener noreferrer">
-                <div className="text-5xl theme-icon-text"><i className="fa-brands fa-github"></i></div>
-                <div className="font-[family-name:var(--font-jetbrains-mono)] text-xs uppercase tracking-[0.2em] text-[var(--text-muted)] mt-4">GitHub</div>
-              </a>
-            </Button>
+            <a href="https://github.com/sudarshanghodke25-coder" target="_blank" rel="noopener noreferrer" className="reveal glass h-auto p-8 rounded-[2rem] flex flex-col items-center justify-center gap-4 hover:border-[var(--accent-cyan)] hover:bg-[rgba(34,211,238,0.05)] transition-all floating shadow-2xl text-center bg-transparent border-0 shadow-none" style={{ animationDelay: "0.2s" }}>
+              <div className="text-5xl theme-icon-text"><i className="fa-brands fa-github"></i></div>
+              <div className="font-[family-name:var(--font-jetbrains-mono)] text-xs uppercase tracking-[0.2em] text-[var(--text-muted)] mt-4">GitHub</div>
+            </a>
           </Magnetic>
 
           <Magnetic>
-            <Button asChild variant="outline" className="reveal glass h-auto p-8 rounded-[2rem] flex flex-col items-center justify-center gap-4 hover:border-[var(--accent-cyan)] hover:bg-[rgba(34,211,238,0.05)] transition-all floating shadow-2xl text-center bg-transparent border-0 border-transparent shadow-none" style={{ animationDelay: "0.4s" }}>
-              <a href="https://www.linkedin.com/in/sudarshan-ghodke-a211a2378/" target="_blank" rel="noopener noreferrer">
-                <div className="text-5xl text-[#0A66C2]"><i className="fa-brands fa-linkedin"></i></div>
-                <div className="font-[family-name:var(--font-jetbrains-mono)] text-xs uppercase tracking-[0.2em] text-[var(--text-muted)] mt-4">LinkedIn</div>
-              </a>
-            </Button>
+            <a href="https://www.linkedin.com/in/sudarshan-ghodke-a211a2378/" target="_blank" rel="noopener noreferrer" className="reveal glass h-auto p-8 rounded-[2rem] flex flex-col items-center justify-center gap-4 hover:border-[var(--accent-cyan)] hover:bg-[rgba(34,211,238,0.05)] transition-all floating shadow-2xl text-center bg-transparent border-0 shadow-none" style={{ animationDelay: "0.4s" }}>
+              <div className="text-5xl text-[#0A66C2]"><i className="fa-brands fa-linkedin"></i></div>
+              <div className="font-[family-name:var(--font-jetbrains-mono)] text-xs uppercase tracking-[0.2em] text-[var(--text-muted)] mt-4">LinkedIn</div>
+            </a>
           </Magnetic>
 
           <Magnetic>
-            <Button asChild variant="outline" className="reveal glass h-auto p-8 rounded-[2rem] flex flex-col items-center justify-center gap-4 hover:border-[var(--accent-cyan)] hover:bg-[rgba(34,211,238,0.05)] transition-all floating shadow-2xl text-center bg-transparent border-0 border-transparent shadow-none" style={{ animationDelay: "0.6s" }}>
-              <a href="https://www.instagram.com/darshan_ghodke_?igsh=dWZhaWlpcmp6eGp5" target="_blank" rel="noopener noreferrer">
-                <div className="text-5xl"><i className="fa-brands fa-instagram" style={{ background: "-webkit-linear-gradient(#f9ce34, #ee2a7b, #6228d7)", WebkitBackgroundClip: "text", WebkitTextFillColor: "transparent" }}></i></div>
-                <div className="font-[family-name:var(--font-jetbrains-mono)] text-xs uppercase tracking-[0.2em] text-[var(--text-muted)] mt-4">Instagram</div>
-              </a>
-            </Button>
+            <a href="https://www.instagram.com/darshan_ghodke_?igsh=dWZhaWlpcmp6eGp5" target="_blank" rel="noopener noreferrer" className="reveal glass h-auto p-8 rounded-[2rem] flex flex-col items-center justify-center gap-4 hover:border-[var(--accent-cyan)] hover:bg-[rgba(34,211,238,0.05)] transition-all floating shadow-2xl text-center bg-transparent border-0 shadow-none" style={{ animationDelay: "0.6s" }}>
+              <div className="text-5xl"><i className="fa-brands fa-instagram" style={{ background: "-webkit-linear-gradient(#f9ce34, #ee2a7b, #6228d7)", WebkitBackgroundClip: "text", WebkitTextFillColor: "transparent" }}></i></div>
+              <div className="font-[family-name:var(--font-jetbrains-mono)] text-xs uppercase tracking-[0.2em] text-[var(--text-muted)] mt-4">Instagram</div>
+            </a>
           </Magnetic>
         </div>
       </section>
